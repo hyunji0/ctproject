@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나뭇잎 잎맥 분류기</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/flexboxgrid@6.3.1/dist/flexboxgrid.min.css" rel="stylesheet">
+    <style>
+        /* Main styling */
+        .leaf-animation {
+            transition: all 0.3s ease;
+        }
+        .leaf-animation:hover {
+            transform: scale(1.05);
+        }
+        /* Custom animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Main Navigation -->
+    <nav class="bg-green-600 text-white p-4">
+        <div class="container mx-auto">
+            <h1 class="text-2xl font-bold">나뭇잎 잎맥 분류기</h1>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container mx-auto p-4">
+        <!-- Tutorial Section -->
+        <section class="mb-8 bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-4">사용 방법</h2>
+            <ol class="list-decimal pl-6">
+                <li class="mb-2">나뭇잎의 세로 길이(높이)를 입력하세요.</li>
+                <li class="mb-2">나뭇잎의 가로 길이(넓이)를 입력하세요.</li>
+                <li class="mb-2">'분류하기' 버튼을 클릭하세요.</li>
+            </ol>
+        </section>
+
+        <!-- Input Form -->
+        <section class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="grid gap-4">
+                <div>
+                    <label for="length" class="block text-sm font-medium text-gray-700">세로 길이 (cm)</label>
+                    <input type="number" id="length" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" min="0" step="0.1">
+                </div>
+                <div>
+                    <label for="width" class="block text-sm font-medium text-gray-700">가로 길이 (cm)</label>
+                    <input type="number" id="width" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500" min="0" step="0.1">
+                </div>
+                <button onclick="classifyLeaf()" class="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors leaf-animation">
+                    분류하기
+                </button>
+            </div>
+        </section>
+
+        <!-- Result Section -->
+        <section id="result" class="hidden bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-xl font-bold mb-4">분류 결과</h2>
+            <p id="resultText" class="text-lg"></p>
+        </section>
+    </main>
+
+    <script>
+        // Sample dataset
+        const sampleData = [
+            { length: 10, width: 5, type: 'parallel' },
+            { length: 8, width: 7, type: 'net' },
+            { length: 15, width: 4, type: 'parallel' },
+            { length: 12, width: 10, type: 'net' }
+        ];
+
+        // Classification function
+        function classifyLeaf() {
+            const length = parseFloat(document.getElementById('length').value);
+            const width = parseFloat(document.getElementById('width').value);
+
+            if (isNaN(length) || isNaN(width)) {
+                alert('올바른 값을 입력해주세요.');
+                return;
+            }
+
+            // Simple classification logic based on length/width ratio
+            const ratio = length / width;
+            const result = ratio > 2 ? 'parallel (평행맥)' : 'net (망상맥)';
+
+            const resultSection = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            
+            resultSection.classList.remove('hidden');
+            resultText.textContent = `입력하신 나뭇잎은 ${result} 형태입니다.`;
+            
+            // Add fade-in animation
+            resultSection.classList.add('fade-in');
+        }
+    </script>
+</body>
+</html>
